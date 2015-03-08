@@ -25,3 +25,27 @@ function initialize() {
 };
 /* end google maps -----------------------------------------------------*/
 });
+
+
+function pollTweets() {
+  setTimeout(function(){
+    requestTweets();
+}, 5000);
+
+};
+
+
+
+function requestTweets() {
+  $.ajax({
+    type: 'GET',
+    url: '../getTweets',
+    //contentType: 'application/json; charset=utf-8',
+    success: function(data) {
+        // Overlay function stuff happens here
+    },
+    //error: playSound,
+    dataType: 'json'
+  });
+
+

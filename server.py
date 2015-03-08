@@ -7,26 +7,41 @@ import logging
 import sys
 from pprint import pprint
 import time
+import pymongo
+from pymongo import MongoClient
+from flask import jsonify
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.DEBUG)
-
+client = MongoClient('mongodb://localhost:27017/').whatsPoppin
 
 @app.route('/')
 def hello():
     return '<a href="/call">Click for tweets</a>'
 
 @app.route('/call')
-def thisFunc():
+def fetchTweets():
     p = subprocess.Popen("python ./stream.py", shell = True)
-    time.sleep(40)
-    subprocess.call(["kill", "-9", "%d" % p.pid])
-    tweet_file = open('./out_file.txt', 'r')
-    http_out = "angello is always right"
-    for line in tweet_file:
-        http_out = http_out+ '<p> '+line+''
-    return http_out
+
+
+
+
+    
+    # time.sleep(40)
+    # subprocess.call(["kill", "-9", "%d" % p.pid])
+    # tweet_file = open('./out_file.txt', 'r')
+    # http_out = "angello is always right"
+    # for line in tweet_file:
+    #     http_out = http_out+ '<p> '+line+''
+    # return http_out
+
+@app.route('/getTweets')
+def getTweets():
+    y = [x for x in client.tweets.find({})]
+    return jsonify(items=y)
+
+
 
 
 

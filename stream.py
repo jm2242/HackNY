@@ -16,18 +16,16 @@ class CustomStreamListener(tweepy.StreamListener):
         
 
     def on_data(self, tweet):
-        tweet_data = json.loads(tweet)
-        self.db.tweets.insert(tweet_data) 
-        global user_id_list
-    
-        print tweet_data
         try:
-            #out_file.write(str(tweet_data['coordinates']['coordinates']).rstrip()+' '+str(tweet_data['text'].encode('utf-8')).rstrip())
-            #out_file.write('\n')
-            pass
+
+            tweet_data = json.loads(tweet)
+            clean_tweet = {'text': tweet_data['text'], 'time': tweet_data['created_at'],\
+                           'locationx': tweet_data['coordinates']['coordinates'][0], 'locationy': tweet_data['coordinates']['coordinates'][1]}
+            
+            print clean_tweet
+            self.db.tweets.insert(clean_tweet)
         except:
             pass
-
 
 
 
