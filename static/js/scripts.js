@@ -44,7 +44,9 @@ function requestTweets() {
     type: 'GET',
     url: '../getTweets',
     //contentType: 'application/json; charset=utf-8',
-    success: overlayTweets(tweetData),
+    success: function(data) {
+        // Overlay function stuff happens here
+    },
     //error: playSound,
     dataType: 'json'
   });
