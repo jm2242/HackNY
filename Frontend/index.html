@@ -79,46 +79,9 @@
       
       <hr>
 
-      <div class="panel panel-default">
-        <div class="panel-heading"><a href="">Trend 4</a></div>
-      </div>
-      <p>Description of certain topic, current trend, ...</p>
-      
-      <hr>
-
-      <div class="panel panel-default">
-        <div class="panel-heading"><a href="">Trend 5</a></div>
-      </div>
-      <p>Description of certain topic, current trend, ...</p>
-      
-      <hr>
-
-      <!-- /item list -->
-      
-      <p>
-      <a href="http://www.bootply.com/render/129229">Demo</a> | <a href="http://bootply.com/129229">Source Code</a>
-      </p>
-      
-      <hr> 
-        
-      <p>
-      <a href="http://bootply.com" target="_ext" class="center-block btn btn-primary">More Bootstrap Snippets on Bootply</a>
-      </p>
-        
-      <hr>      
-
     </div>
     <div class="col-xs-8"><!--map-canvas will be postioned here-->
-    
-    <!-- "iframe map"
-    <iframe
-    width="400"
-    height="800"
-    frameborder="0" style="border:0"
-    src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCEI4Da8Gny3sOfJysDIT3eZ7M7m5P6sXA
-    &q=Space+Needle,Seattle+WA">
-    </iframe>
-    -->
+
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEI4Da8Gny3sOfJysDIT3eZ7M7m5P6sXA">
     </script>
@@ -143,7 +106,7 @@
 
       var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-      setMarkers(map, keywords)
+      setMarkers(map, keywords);
 
       var marker = new google.maps.Marker({
           position: pos1,
@@ -212,26 +175,21 @@
       }
     }
 
-
     google.maps.event.addDomListener(window, 'load', initialize);
 
     </script>
 
-    
-
-</template>    
-    </div>
-    
-
-    
+  </template>    
+    </div>   
   </div>
 </div>
 <!-- end template -->
 
-	<!-- script references -->
+	<!-- script references 
 		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.2/jquery.min.js"></script>
 		<script src="js/bootstrap.min.js"></script>
 		<script src="http://maps.googleapis.com/maps/api/js?sensor=false&extension=.js&output=embed"></script>
 		<script src="js/scripts.js"></script>
+    -->
 	</body>
 </html>
