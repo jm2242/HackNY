@@ -134,8 +134,8 @@
       };
 
       var mapOptions = {
-        zoom: 12,
-        center: {lat: 40.712, lng: -74.026},
+        zoom: 16,
+        center: {lat: 40.8075, lng: -73.9619},
       }
 
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -158,6 +158,7 @@
           map: map,
           title: 'Hello World!'
       });
+
 
       var contentString = '<div id="content">'+
       '<div id="siteNotice">'+
@@ -191,40 +192,65 @@
     function setMarkers(map, locations) {
       console.log(locations)
       for (var i = 0; i < locations.length; i++) {
-        console.log("Inside setMarkers")
-        console.log(locations[i])
-        var keyword = locations[i];
-        var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
-        contentStringArray.push(keyword['text'])
-        var marker = new google.maps.Marker({
-            position: myLatLng,
-            map: map,
-            icon: {
-                path: google.maps.SymbolPath.CIRCLE,
-                scale: 10,
-              },
-            title: keyword['time'],
-            
-        }
-        );
+
+          console.log("Inside setMarkers")
+          console.log(locations[i])
+          var keyword = locations[i];
+          var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
+          contentStringArray.push(keyword['text'])
+          var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 10,
+                },
+              title: keyword['time'],
+              
+          }
+          );
 
 
 
-        marker.info = new google.maps.InfoWindow({
-        content: contentStringArray[i]
-        });
-        
-        my_markers.push(marker);
+          marker.info = new google.maps.InfoWindow({
+          content: contentStringArray[i]
+          });
+          
+          my_markers.push(marker);
 
-        console.log(my_markers)
+          setTimeout(function(){console.log(my_markers)}, 3000)
+          
 
-        google.maps.event.addListener(my_markers[i], 'click', function() {
-        this.info.open(map,my_markers[i]);
-        });
+          google.maps.event.addListener(my_markers[i], 'click', function() {
+          this.info.open(map,my_markers[i]);
+          });
         
         
 
       }
+
+      //myString = ""
+      //for (var i = 0; i < contentStringArray.length; i++){
+        //myString = myString + " " + contentStringArray[i];
+      //}
+        //$.ajax({
+        //type: 'POST',
+        //url: '../analyzeText',
+        //data: {'data':myString},
+        //contentType: 'application/json; charset=utf-8',
+        //success: function(data) {
+          //console.log(data)
+          //document.getElementById("demo").innerHTML = data[0]['locationx']
+          
+        //}, 
+            // Overlay function stuff happens here
+        //error: playSound,
+        //dataType: 'json'
+      //}); 
+      
+
+
+
     }
 
 
