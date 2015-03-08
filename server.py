@@ -19,7 +19,7 @@ def hello():
 
 @app.route('/call')
 def thisFunc():
-    p = subprocess.Popen("C:\Python27\python.exe ./stream.py", shell = True)
+    p = subprocess.Popen("python ./stream.py", shell = True)
     time.sleep(40)
     subprocess.call(["kill", "-9", "%d" % p.pid])
     tweet_file = open('./out_file.txt', 'r')

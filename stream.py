@@ -1,25 +1,32 @@
 import tweepy
 import json
+import pymongo
+from pymongo import MongoClient
+
 
 
 out_file = open('./out_file.txt','w')
 
 class CustomStreamListener(tweepy.StreamListener):
+    #creates a MongoClient to the running mongod instance
     def __init__(self, api):
         self.api = api
         super(tweepy.StreamListener, self).__init__()
-        #self.db = pymongo.MongoClient('mongodb://localhost:27017/').test <---Not needed, but can add database to it
-
+        self.db = MongoClient('mongodb://localhost:27017/').whatsPoppin #<---Not needed, but can add database to it
+        
 
     def on_data(self, tweet):
-
-          #self.db.tweets.insert(json.loads(tweet)) <---Not needed, but can add database o it
-        global user_id_list
-
         tweet_data = json.loads(tweet)
+        self.db.tweets.insert(tweet_data) 
+        global user_id_list
+    
         print tweet_data
-        out_file.write(str(tweet_data['coordinates']['coordinates']).rstrip()+' '+str(tweet_data['text'].encode('utf-8')).rstrip())
-        out_file.write('\n')
+        try:
+            out_file.write(str(tweet_data['coordinates']['coordinates']).rstrip()+' '+str(tweet_data['text'].encode('utf-8')).rstrip())
+            out_file.write('\n')
+        except:
+            pass
+        
 
 
 
