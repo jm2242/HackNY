@@ -108,7 +108,9 @@
       <hr>      
 
     </div>
-    <div class="col-xs-8"><!--map-canvas will be postioned here--></div>
+    <div class="col-xs-8"><!--map-canvas will be postioned here-->
+    
+    <!-- "iframe map"
     <iframe
     width="400"
     height="800"
@@ -116,6 +118,29 @@
     src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCEI4Da8Gny3sOfJysDIT3eZ7M7m5P6sXA
     &q=Space+Needle,Seattle+WA">
     </iframe>
+    -->
+    <script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCEI4Da8Gny3sOfJysDIT3eZ7M7m5P6sXA">
+    </script>
+    <script type="text/javascript">
+      function initialize() {
+        var mapOptions = {
+          center: { lat: 40.712, lng: -74.006},
+          zoom: 12
+        };
+        var map = new google.maps.Map(document.getElementById('map-canvas'),
+            mapOptions);
+      }
+      google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+
+    
+
+</template>    
+    </div>
+    
+
     
   </div>
 </div>
