@@ -7,11 +7,14 @@ import logging
 import sys
 from pprint import pprint
 import time
+import pymongo
+from pymongo import MongoClient
+from flask import jsonify
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
 app.logger.setLevel(logging.DEBUG)
-
+client = MongoClient('mongodb://localhost:27017/').whatsPoppin
 
 @app.route('/')
 def hello():
@@ -27,6 +30,13 @@ def thisFunc():
     for line in tweet_file:
         http_out = http_out+ '<p> '+line+''
     return http_out
+
+@app.route('/getTweets')
+def getTweets():
+    y = [x for x in client.tweets.find({})]
+    return jsonify(items=y)
+
+
 
 
 

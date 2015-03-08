@@ -25,3 +25,28 @@ function initialize() {
 };
 /* end google maps -----------------------------------------------------*/
 });
+
+
+function pollTweets() {
+  setTimeout(function(){
+    requestTweets();
+}, 5000);
+
+};
+
+function overlayTweets(tweetData) {
+
+};
+
+
+function requestTweets() {
+  $.ajax({
+    type: 'GET',
+    url: '../getTweets',
+    //contentType: 'application/json; charset=utf-8',
+    success: overlayTweets(tweetData),
+    //error: playSound,
+    dataType: 'json'
+  });
+
+
