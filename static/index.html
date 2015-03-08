@@ -87,6 +87,38 @@
     </script>
     <script type="text/javascript">
 
+    function pollTweets() {
+      setTimeout(function(){
+        requestTweets();
+      }, 5000);
+    };
+
+    tweetData = {};
+    map = {};
+    my_markers = [];
+    google.maps.event.addDomListener(window, 'load', initialize);
+
+    function requestTweets() {
+      $.ajax({
+        type: 'GET',
+        url: '../getTweets',
+        //contentType: 'application/json; charset=utf-8',
+        success: function(data) {
+          console.log(data)
+
+          //document.getElementById("demo").innerHTML = data[0]['locationx']
+          tweetData = data;
+          console.log("Map gonna be used")
+          setMarkers(map, tweetData);
+          
+        }, 
+            // Overlay function stuff happens here
+        //error: playSound,
+        dataType: 'json'
+      });
+    }
+    
+
     function initialize() {
       var pos1 = new google.maps.LatLng(40.7427,-74.0059);
       var pos2 = new google.maps.LatLng(40.7127,-74.0259);
@@ -104,9 +136,10 @@
         center: {lat: 40.712, lng: -74.026},
       }
 
-      var map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
-
-      setMarkers(map, keywords);
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      console.log("Map set")
+      pollTweets();
+      
 
       var marker = new google.maps.Marker({
           position: pos1,
@@ -151,21 +184,29 @@
     ];
 
     
+
+
     function setMarkers(map, locations) {
+      console.log(locations)
       for (var i = 0; i < locations.length; i++) {
+        console.log("Inside setMarkers")
+        console.log(locations[i])
         var keyword = locations[i];
-        var myLatLng = new google.maps.LatLng(keyword[1], keyword[2]);
+        var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
+        console.log(keyword['locationx'])
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
             icon: {
-                path: google.maps.SymbolPath.BACKWARD_OPEN_ARROW,
-                scale: 8,
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 10,
               },
-            title: keyword[0],
-            zIndex: keyword[3]
-        });
-        var contentString = keyword[4];
+            title: keyword['time'],
+            
+        }
+        );
+        my_markers.push(marker);
+        var contentString = keyword['text'];
         var infowindow = new google.maps.InfoWindow({
         content: contentString
         });
@@ -175,10 +216,18 @@
       }
     }
 
-    google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    
+
+
+ 
+
+
 
     </script>
-    </template>    
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/scripts.js"></script>  
   </div>   
 </div>
 <!-- end template -->
