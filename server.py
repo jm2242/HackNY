@@ -23,7 +23,7 @@ def thisFunc():
     time.sleep(40)
     subprocess.call(["kill", "-9", "%d" % p.pid])
     tweet_file = open('./out_file.txt', 'r')
-    http_out = ""
+    http_out = "angello is always right"
     for line in tweet_file:
         http_out = http_out+ '<p> '+line+''
     return http_out

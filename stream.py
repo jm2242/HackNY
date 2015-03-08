@@ -22,11 +22,12 @@ class CustomStreamListener(tweepy.StreamListener):
     
         print tweet_data
         try:
-            out_file.write(str(tweet_data['coordinates']['coordinates']).rstrip()+' '+str(tweet_data['text'].encode('utf-8')).rstrip())
-            out_file.write('\n')
+            #out_file.write(str(tweet_data['coordinates']['coordinates']).rstrip()+' '+str(tweet_data['text'].encode('utf-8')).rstrip())
+            #out_file.write('\n')
+            pass
         except:
             pass
-        
+
 
 
 
