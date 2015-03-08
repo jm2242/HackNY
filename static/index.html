@@ -96,6 +96,8 @@
     tweetData = {};
     map = {};
     my_markers = [];
+    info_windows = [];
+    contentStringArray=[]
     google.maps.event.addDomListener(window, 'load', initialize);
 
     function requestTweets() {
@@ -193,7 +195,7 @@
         console.log(locations[i])
         var keyword = locations[i];
         var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
-        console.log(keyword['locationx'])
+        contentStringArray.push(keyword['text'])
         var marker = new google.maps.Marker({
             position: myLatLng,
             map: map,
@@ -205,14 +207,23 @@
             
         }
         );
+
+
+
+        marker.info = new google.maps.InfoWindow({
+        content: contentStringArray[i]
+        });
+        
         my_markers.push(marker);
-        var contentString = keyword['text'];
-        var infowindow = new google.maps.InfoWindow({
-        content: contentString
+
+        console.log(my_markers)
+
+        google.maps.event.addListener(my_markers[i], 'click', function() {
+        this.info.open(map,my_markers[i]);
         });
-        google.maps.event.addListener(marker, 'click', function() {
-        infowindow.open(map,marker);
-        });
+        
+        
+
       }
     }
 
