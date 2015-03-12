@@ -15,7 +15,7 @@
 	<body>
 <!-- begin template -->
 <div class="navbar navbar-custom navbar-fixed-top">
- <div class="navbar-header"><a class="navbar-brand" href="#">TwitterPop - What's going around you?</a>
+ <div class="navbar-header"><a class="navbar-brand" href="#">TwitterPop - What's Poppin'?</a>
       <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -33,7 +33,7 @@
         <div class="form-group" style="display:inline;">
           <div class="input-group">
             <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></button>
+              <button type="button" onclick="buttonFunct()" class="btn btn-default dropdown-toggle" data-toggle="dropdown"><span class="glyphicon glyphicon-chevron-down"></span></button>
               <ul class="dropdown-menu">
                 <li><a href="#">Category 1</a></li>
                 <li><a href="#">Category 2</a></li>
@@ -42,7 +42,8 @@
                 <li><a href="#">Category 5</a></li> 
               </ul>
             </div>
-            <input type="text" class="form-control" placeholder="What are searching for?">
+            <input type="text" name="thatsearchbar" class="form-control" placeholder="What are searching for?" id="thatsearchbar">
+
             <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span> </span>
           </div>
         </div>
@@ -105,6 +106,7 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
     my_markers = [];
     info_windows = [];
     contentStringArray=[]
+    locationArray = []
     google.maps.event.addDomListener(window, 'load', initialize);
 
     function requestTweets() {
@@ -131,18 +133,19 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
     function initialize() {
       var pos1 = new google.maps.LatLng(40.7427,-74.0059);
       var pos2 = new google.maps.LatLng(40.7127,-74.0259);
+
       var goldStar = {
         path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
         fillColor: "yellow",
         fillOpacity: 0.8,
         scale: 0.1,
-        strokeColor: "gold",
+        strokeColor: "red",
         strokeWeight: 14
       };
 
       var mapOptions = {
         zoom: 14,
-        center: {lat: 40.8075, lng: -73.9619},
+        center: {lat: 40.8065, lng: -73.9609},
       }
 
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
@@ -160,7 +163,7 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
           title: 'Hello World!'
       });
       var marker2 = new google.maps.Marker({
-          position: pos2,
+          position: {lat: 40.8075, lng: -73.9619},
           icon: goldStar,
           map: map,
           title: 'Hello World!'
@@ -170,20 +173,16 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
       var contentString = '<div id="content">'+
       '<div id="siteNotice">'+
       '</div>'+
-      '<h3 id="firstHeading" class="firstHeading">Trending keyword</h3>'+
-      '<div id="bodyContent">'+
-      '<p><b>Trending keyword</b>, also referred to as <b>Ayers Rock</b>, is a large sandstone rock formation. <p>'+
-      '<a href="https://en.wikipedia.org/w/index.php?title=Trending keyword&oldid=297882194">'+
-      'https://en.wikipedia.org/w/index.php?title=Trending keyword</a> '+
-      '(last visited June 22, 2009).</p>'+
+      '<h4 id="firstHeading" class="firstHeading">Jennifer Breuer ‏@JenBreuer  3 mins ago</h4>'+
+      'Checkout the Macintosh Original Icons at MoMa: http://www.fastcodesign.com/3043312/moma-recognizes-susan-kare-the-designer-      of-the-macintoshs-original-icons?partner=rss'+
       '</div>'+
       '</div>';
 
-      var infowindow = new google.maps.InfoWindow({
+      var infowindow2 = new google.maps.InfoWindow2({
       content: contentString
       });
       google.maps.event.addListener(marker, 'click', function() {
-      infowindow.open(map,marker);
+      infowindow2.open(map,marker);
       });
     }
 
@@ -204,6 +203,7 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
           console.log(locations[i])
           var keyword = locations[i];
           var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
+          locationArray.push(myLatLng);
           contentStringArray.push(keyword['text'])
           var marker = new google.maps.Marker({
               position: myLatLng,
@@ -220,7 +220,8 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
 
 
           marker.info = new google.maps.InfoWindow({
-          content: contentStringArray[i]
+            content: contentStringArray[i],
+            position: locationArray[i],
           });
           
           my_markers.push(marker);
@@ -253,14 +254,25 @@ Unlimited Mimosa's for brunch, best idea ever 🍸 #barawine #harlem #newyork #S
             // Overlay function stuff happens here
         //error: playSound,
         //dataType: 'json'
-      //}); 
-      
-
+      //});
 
 
     }
 
-
+    function buttonFunct(){
+      console.log("Button")
+      for(i=0;i< my_markers.length;i++){
+        
+        //var query = $('#thatsearchbar');
+        //console.log(query.value)
+        //query = document.getElementsByName("thatsearchbar")[0].value;
+        //console.log(marker.content)
+        if(contentStringArray[i].indexOf('Flowers')!=-1){
+          //my_markers[i].icon.path =  google.maps.SymbolPath.BACKWARD_OPEN_ARROW
+          my_markers[i].info.click()
+        }
+      }
+    }
 
     
 

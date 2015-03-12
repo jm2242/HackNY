@@ -10,6 +10,7 @@ import time
 import pymongo
 from pymongo import MongoClient
 from flask import jsonify
+from bson.json_util import dumps
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -39,9 +40,11 @@ def fetchTweets():
 @app.route('/getTweets')
 def getTweets():
     y = [x for x in client.tweets.find({})]
-    return jsonify(items=y)
+    return dumps(y)
 
-
+@app.route('/analyzeText')
+def analyzeText(data):
+    print data['data']
 
 
 
