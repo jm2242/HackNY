@@ -57,7 +57,7 @@
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       console.log("Map set")
       pollTweets();
-      
+
 
       //var marker = new google.maps.Marker({
           //position: pos1,
@@ -91,15 +91,6 @@
       infowindow2.open(map,marker);
       });
     }
-
-    var keywords = [
-      ['Restaurant', 40.7127, -74.0059, 1, "Content1"],
-      ['Club', 40.7327, -74.0259, 2, "Content2"],
-      ['Crime', 40.7027, -74.0459, 3, "<h4>Crime Keyword</h4> <p> This is a Crime happening"]
-    ];
-
-    
-
 
     function setMarkers(map, locations) {
       console.log(locations)
@@ -172,14 +163,15 @@
       for(i=0;i< my_markers.length;i++){
         //query = document.getElementsByName("thatsearchbar")[0].value;
         //console.log(contentStringArray[i])
-        if(contentStringArray[i].indexOf(queryVal)==-1){
+        var content = contentStringArray[i].toLowerCase();
+        if(content.indexOf(queryVal.toLowerCase())==-1){
           //my_markers[i].icon.path =  google.maps.SymbolPath.BACKWARD_OPEN_ARROW
           //my_markers[i].info
           my_markers[i].setMap(null);
           console.log("deleted one");
 
         }
-        else if(contentStringArray[i].indexOf(queryVal)!=-1){
+        else{
             my_markers[i].setMap(map);
             console.log("set one");
         }
