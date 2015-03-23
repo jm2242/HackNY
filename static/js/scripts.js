@@ -1,50 +1,192 @@
-$(document).ready(function(){/* google maps -----------------------------------------------------*/
-google.maps.event.addDomListener(window, 'load', initialize);
+    //var map;
 
-function initialize() {
+    function pollTweets() {
+      setTimeout(function(){
+        requestTweets();
+      }, 5000);
+    };
 
-  /* position Amsterdam */
-  var latlng = new google.maps.LatLng(52.3731, 4.8922);
+    tweetData = {};
+    map = {};
+    my_markers = [];
+    info_windows = [];
+    contentStringArray=[]
+    locationArray = []
+    google.maps.event.addDomListener(window, 'load', initialize);
+    map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
-  var mapOptions = {
-    center: latlng,
-    scrollWheel: false,
-    zoom: 13
-  };
-  
-  var marker = new google.maps.Marker({
-    position: latlng,
-    url: '/',
-    animation: google.maps.Animation.DROP
-  });
-  
-  var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-  marker.setMap(map);
+    function requestTweets() {
+      $.ajax({
+        type: 'GET',
+        url: '../getTweets',
+        //contentType: 'application/json; charset=utf-8',
+        success: function(data) {
+          console.log(data)
 
-};
-/* end google maps -----------------------------------------------------*/
-});
+          //document.getElementById("demo").innerHTML = data[0]['locationx']
+          tweetData = data;
+          console.log("Map gonna be used")
+          setMarkers(map, tweetData);
+          
+        }, 
+            // Overlay function stuff happens here
+        //error: playSound,
+        dataType: 'json'
+      });
+    }
+    
+
+    function initialize() {
+      var pos1 = new google.maps.LatLng(40.7427,-74.0059);
+      var pos2 = new google.maps.LatLng(40.7127,-74.0259);
+
+      var goldStar = {
+        path: 'M 125,5 155,90 245,90 175,145 200,230 125,180 50,230 75,145 5,90 95,90 z',
+        fillColor: "yellow",
+        fillOpacity: 0.8,
+        scale: 0.1,
+        strokeColor: "red",
+        strokeWeight: 14
+      };
+
+      var mapOptions = {
+        zoom: 14,
+        center: {lat: 40.8065, lng: -73.9609},
+      }
+
+      map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
+      console.log("Map set")
+      pollTweets();
+      
+
+      //var marker = new google.maps.Marker({
+          //position: pos1,
+          //icon: {
+            //path: google.maps.SymbolPath.CIRCLE,
+            //scale: 10,
+          //},
+          //map: map,
+          //title: 'Hello World!'
+      //});
+      var marker2 = new google.maps.Marker({
+          position: {lat: 40.8075, lng: -73.9619},
+          icon: goldStar,
+          map: map,
+          title: 'Hello World!'
+      });
 
 
-function pollTweets() {
-  setTimeout(function(){
-    requestTweets();
-}, 5000);
+      var contentString = '<div id="content">'+
+      '<div id="siteNotice">'+
+      '</div>'+
+      '<h4 id="firstHeading" class="firstHeading">Jennifer Breuer ‏@JenBreuer  3 mins ago</h4>'+
+      'Checkout the Macintosh Original Icons at MoMa: http://www.fastcodesign.com/3043312/moma-recognizes-susan-kare-the-designer-      of-the-macintoshs-original-icons?partner=rss'+
+      '</div>'+
+      '</div>';
 
-};
+      var infowindow2 = new google.maps.InfoWindow2({
+      content: contentString
+      });
+      google.maps.event.addListener(marker, 'click', function() {
+      infowindow2.open(map,marker);
+      });
+    }
+
+    var keywords = [
+      ['Restaurant', 40.7127, -74.0059, 1, "Content1"],
+      ['Club', 40.7327, -74.0259, 2, "Content2"],
+      ['Crime', 40.7027, -74.0459, 3, "<h4>Crime Keyword</h4> <p> This is a Crime happening"]
+    ];
+
+    
+
+
+    function setMarkers(map, locations) {
+      console.log(locations)
+      for (var i = 0; i < locations.length; i++) {
+
+          console.log("Inside setMarkers")
+          console.log(locations[i])
+          var keyword = locations[i];
+          var myLatLng = new google.maps.LatLng(keyword['locationy'], keyword['locationx']);
+          locationArray.push(myLatLng);
+          contentStringArray.push(keyword['text'])
+          var marker = new google.maps.Marker({
+              position: myLatLng,
+              map: map,
+              animation: google.maps.Animation.DROP,
+              icon: {
+                  path: google.maps.SymbolPath.CIRCLE,
+                  scale: 10,
+                },
+              title: keyword['time'],
+              
+          }
+          );
 
 
 
-function requestTweets() {
-  $.ajax({
-    type: 'GET',
-    url: '../getTweets',
-    //contentType: 'application/json; charset=utf-8',
-    success: function(data) {
-        // Overlay function stuff happens here
-    },
-    //error: playSound,
-    dataType: 'json'
-  });
+          marker.info = new google.maps.InfoWindow({
+            content: contentStringArray[i],
+            position: locationArray[i],
+          });
+          
+          my_markers.push(marker);
 
+          setTimeout(function(){console.log(my_markers)}, 3000)
+          
+
+          google.maps.event.addListener(my_markers[i], 'click', function() {
+          this.info.open(map,my_markers[i]);
+          });
+
+      }
+
+      //myString = ""
+      //for (var i = 0; i < contentStringArray.length; i++){
+        //myString = myString + " " + contentStringArray[i];
+      //}
+        //$.ajax({
+        //type: 'POST',
+        //url: '../analyzeText',
+        //data: {'data':myString},
+        //contentType: 'application/json; charset=utf-8',
+        //success: function(data) {
+          //console.log(data)
+          //document.getElementById("demo").innerHTML = data[0]['locationx']
+          
+        //}, 
+            // Overlay function stuff happens here
+        //error: playSound,
+        //dataType: 'json'
+      //});
+
+
+    }
+
+    function buttonFunct(){
+
+      var query = document.getElementById("thatsearchbar");
+      var queryVal = query.value;
+      console.log(queryVal);
+      for(i=0;i< my_markers.length;i++){
+        //query = document.getElementsByName("thatsearchbar")[0].value;
+        //console.log(contentStringArray[i])
+        if(contentStringArray[i].indexOf(queryVal)==-1){
+          //my_markers[i].icon.path =  google.maps.SymbolPath.BACKWARD_OPEN_ARROW
+          //my_markers[i].info
+          my_markers[i].setMap(null);
+          console.log("deleted one");
+
+        }
+        else if(contentStringArray[i].indexOf(queryVal)!=-1){
+            my_markers[i].setMap(map);
+            console.log("set one");
+        }
+      }
+    }
+
+
+
+    
 

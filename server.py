@@ -11,6 +11,7 @@ import pymongo
 from pymongo import MongoClient
 from flask import jsonify
 from bson.json_util import dumps
+from flask import render_template
 
 app = Flask(__name__)
 app.logger.addHandler(logging.StreamHandler(sys.stdout))
@@ -18,12 +19,15 @@ app.logger.setLevel(logging.DEBUG)
 client = MongoClient('mongodb://localhost:27017/').whatsPoppin
 
 @app.route('/')
-def hello():
-    return '<a href="/call">Click for tweets</a>'
+def index():
+    render_template('/static/index.html')
+    #return '<a href="/call">Click for tweets</a>'
 
 @app.route('/call')
 def fetchTweets():
     p = subprocess.Popen("python ./stream.py", shell = True)
+    return "<p>Tweets being collected!"
+
 
 
 
