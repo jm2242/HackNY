@@ -1,9 +1,7 @@
     //var map;
 
     function pollTweets() {
-      setTimeout(function(){
-        requestTweets();
-      }, 5000);
+      requestTweets();
     };
 
     tweetData = {};
@@ -12,6 +10,7 @@
     info_windows = [];
     contentStringArray=[]
     locationArray = []
+    to_delete_array = []
     google.maps.event.addDomListener(window, 'load', initialize);
     map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
 
@@ -56,8 +55,8 @@
 
       map = new google.maps.Map(document.getElementById('map-canvas'), mapOptions);
       console.log("Map set")
-      pollTweets();
-
+      //pollTweets();
+      setInterval(pollTweets, 10000);
 
       //var marker = new google.maps.Marker({
           //position: pos1,
@@ -105,7 +104,7 @@
           var marker = new google.maps.Marker({
               position: myLatLng,
               map: map,
-              animation: google.maps.Animation.DROP,
+              animation: google.maps.Animation.BOUNCE,
               icon: {
                   path: google.maps.SymbolPath.CIRCLE,
                   scale: 10,
@@ -124,12 +123,17 @@
           
           my_markers.push(marker);
 
-          setTimeout(function(){console.log(my_markers)}, 3000)
+          //setTimeout(function(){console.log(my_markers)}, 3000)
           
 
           google.maps.event.addListener(my_markers[i], 'click', function() {
           this.info.open(map,my_markers[i]);
           });
+
+          setTimeout(function(){
+          //requestTweets();
+          setClear();
+          }, 9960);
 
       }
 
@@ -180,5 +184,23 @@
 
 
 
-    
+function arr_diff(a1, a2){
+  var a=[], diff=[];
+  for(var i=0;i<a1.length;i++)
+    a[a1[i]]=true;
+  for(var i=0;i<a2.length;i++)
+    if(a[a2[i]]) delete a[a2[i]];
+    else a[a2[i]]=true;
+  for(var k in a)
+    diff.push(k);
+  return diff;
+}
 
+function setClear() {
+  for (var i = 0; i < my_markers.length; i++) {
+    my_markers[i].setMap(null);
+  }
+  my_markers = [];
+  locationArray = [];
+  contentStringArray = [];
+}
